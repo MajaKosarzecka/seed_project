@@ -25,7 +25,7 @@ public class ContactCreator {
             delete contactToDelete;
             return 'Success';
         } catch (DmlException e) {
-            return 'No contact found';
+            return 'Error occured while trying to delete Contact: contactId';
         } catch (QueryException e) {
             return 'No contact found';
         }
@@ -39,26 +39,20 @@ public class ContactCreator {
         } catch (QueryException e) {
             System.debug('No account found with the name: ' + accountName);
             return 0;
-        }   catch (DmlException e) {
-            System.debug('Error while counting contacts: ' + e.getMessage());
-            return 0;
-        }
+        }  
     }
     public static Set<Id> getContactByLastName(String lastName) {
         Set<Id> contactIds = new Set<Id>();
-        try {
-            List<Contact> contacts = [SELECT Id, AccountId, FirstName, LastName, Email, Phone FROM Contact WHERE LastName = :lastName];
+        List<Contact> contacts = [SELECT Id, AccountId, FirstName, LastName, Email, Phone FROM Contact WHERE LastName = :lastName];
+
+        if (contacts.isEmpty() {
+            System.debug('No contacts found with the last name: ' + lastName);
+        } else {
             for (Contact c : contacts) {
                 contactIds.add(c.Id);
             }
-            return contactIds;
-        } catch (QueryException e) {
-            System.debug('No contacts found with the last name: ' + lastName);
-            return contactIds;
-        } catch (DmlException e) {
-            System.debug('Error while retrieving contacts: ' + e.getMessage());
-            return contactIds;
         }
+        return contactIds;
     }
 
     /*
