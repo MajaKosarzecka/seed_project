@@ -1,11 +1,13 @@
 public class ListLearning {
   public static void task1() {
-    List<String> FruitList = new List<String>{'Apple', 'Banana', 'Cherry'};
-    for (String fruit : FruitList) {
+    String[] fruits = new String[]{'Apple', 'Banana', 'Cherry'};
+    List<String> fruitsList = new List<String>(fruits);
+
+    for (String fruit : fruitsList) {
       System.debug(fruit);
     }
     FruitList.add('DragonFruit');
-    System.debug(FruitList[FruitList.size() - 1]);
+    System.debug(fruitsList[fruitsList.size() - 1]);
 /*
 1. Initialize a new list that will store text values. Initialize it with the following values: "Apple", "Banana", "Cherry"
     (the task is not about initializing and then adding the values!).
