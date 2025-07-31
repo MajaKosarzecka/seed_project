@@ -6,7 +6,7 @@ public with sharing class Cat {
 
     public Cat(String name) {
         this(name, null, null);
-        System.debug("imię kota to " + name);
+        System.debug('imię kota to ' + name);
     }
 
     public Cat(String name, Integer birthYear, String color) {
