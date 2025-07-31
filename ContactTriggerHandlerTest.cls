@@ -189,7 +189,7 @@ public class ContactTriggerHandlerTest {
         delete listToBulk;
         Test.stopTest();
 
-        Integer countUpdatedContacts = [SELECT COUNT() FROM Contact_History__c WHERE Action__c = 'Delete'];
+        Integer countUpdatedContacts = [SELECT COUNT() FROM Contact_History__c WHERE Action__c = 'Delete' AND Contact__r.Email LIKE '%bulk@gmail.com'];
         System.assertEquals(200, countUpdatedContacts, 'it should create 200 delete history records');
     }
 }
