@@ -14,7 +14,7 @@ public class ContactTriggerHandlerTest {
         return [SELECT Id FROM Account LIMIT 1];
     }
 
-    private static getContact() {
+    private static Contact getContact() {
         return [SELECT Id, FirstName, LastName, Email, AccountId FROM Contact WHERE Email = 'jan.nowak@gmail.com' LIMIT 1];
     }
 
@@ -37,7 +37,7 @@ public class ContactTriggerHandlerTest {
 
     @isTest
     static void EmailOrPhoneRequiredBeforeInserting() {
-        Account a = createAccount();
+        Account a = getAccount();
         Contact contactNoEmail = new Contact(FirstName = 'Jan', LastName = 'Nowak');
        
 
@@ -59,8 +59,8 @@ public class ContactTriggerHandlerTest {
         insert contact;
         Test.stopTest();
 
-        Integer count = [SELECT COUNT() FROM Contact_History__c WHERE Contact__c = :contact.Id AND Action__c == 'Insert'];
-        System.assertEquals(1, count, 'it should find one insert method with this contact id');
+        Integer count = [SELECT COUNT() FROM Contact_History__c WHERE Contact__c = :contact.Id AND Action__c = 'Insert'];
+        System.assertEquals(1, count, 'it should create one insert record with this contact id');
 
     }
 
@@ -68,13 +68,13 @@ public class ContactTriggerHandlerTest {
     static void DeleteMethodInContactHistory() {
         Contact contact = new Contact(FirstName = 'Jan', LastName = 'Nowak', Email = 'jan.nowakowski@gmail.com');
 
-        Test.StartTest();
-        insert contact:
+        Test.startTest();
+        insert contact;
         delete contact;
-        Test.StopTest();
+        Test.stopTest();
 
         findContactInHistory = [SELECT COUNT() FROM Contact_History__c WHERE Action__c = 'Delete' AND Email = :'jan.nowakowski@gmail.com'];
-        System.assertEquals(1, findContactInHistory, 'it should find one contact with delete ')
+        System.assertEquals(1, findContactInHistory, 'it should create one delete record');
     }
 
     @isTest
@@ -84,15 +84,17 @@ public class ContactTriggerHandlerTest {
         oldContact.FirstName = 'Ola';
         oldContact.LastName = 'Nowakowska';
 
+        Test.startTest();
         update oldContact;
+        Test.stopTest();
 
         CountUpdateMethods = [SELECT COUNT() FROM Contact_History__c WHERE Action__c = 'Update' AND Contact__c = :oldContact.Id];
-        System.assertEquals(2, CountUpdateMethods, 'it should find 2 update methods')
+        System.assertEquals(2, CountUpdateMethods, 'it should create 2 update records');
     }
 
     @isTest
     static void bulk200Contacts() {
-        List<Contact> listToBulk = new List<Contact>()
+        List<Contact> listToBulk = new List<Contact>();
         for (Integer i = 0; i < 200; i++) {
             listToBulk.add(new Contact(
                 FirstName = 'Joanna' + i,
@@ -100,9 +102,11 @@ public class ContactTriggerHandlerTest {
                 Email = i+'bulk@gmail.com',
             ));
         }
+        Test.startTest();
         insert listToBulk;
+        Test.stopTest();
 
         countAddedContacts = [SELECT COUNT() FROM Contact_History__c WHERE Action__c = 'Insert'];
-        System.assertEqual(200, countAddedContacts, 'it should find 200 insert contacts');
+        System.assertEqual(200, countAddedContacts, 'it should create 200 insert history records');
     }
 }
