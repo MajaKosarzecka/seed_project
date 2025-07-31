@@ -28,7 +28,7 @@ public class ContactTriggerHandlerTest {
             update contact;
             System.assert(false, 'it does not catch addError properly');
         } catch (DmlException e) {
-            System.assertEquals(e.getMessage().contains('Unable to remove account field value'));
+            System.assertEquals(true, e.getMessage().contains('Unable to remove account field value'));
         }
 
         Test.stopTest();
@@ -45,7 +45,7 @@ public class ContactTriggerHandlerTest {
             insert contactNoEmailAndPhone;
             System.assert(false, 'id does not catch addError properly');
         } catch (DmlException e) {
-            System.assertEquals(e.getMessage().contains('Please provide phone or email value'));
+            System.assertEquals(true, e.getMessage().contains('Please provide phone or email value'));
         }
         Test.stopTest();
     }
@@ -145,7 +145,7 @@ public class ContactTriggerHandlerTest {
         insert listToBulk;
         Test.stopTest();
 
-        Integer countAddedContacts = [SELECT COUNT() FROM Contact_History__c WHERE Action__c = 'Insert'];
+        Integer countAddedContacts = [SELECT COUNT() FROM Contact_History__c WHERE Action__c = 'Insert' AND Contact__r.Email LIKE '%bulk@gmail.com'];
         System.assertEquals(200, countAddedContacts, 'it should create 200 insert history records');
     }
 
