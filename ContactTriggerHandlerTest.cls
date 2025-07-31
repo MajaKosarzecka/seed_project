@@ -73,7 +73,7 @@ public class ContactTriggerHandlerTest {
         delete contact;
         Test.stopTest();
 
-        findContactInHistory = [SELECT COUNT() FROM Contact_History__c WHERE Action__c = 'Delete' AND Email = :'jan.nowakowski@gmail.com'];
+        Integer findContactInHistory = [SELECT COUNT() FROM Contact_History__c WHERE Action__c = 'Delete'];
         System.assertEquals(1, findContactInHistory, 'it should create one delete record');
     }
 
@@ -88,7 +88,7 @@ public class ContactTriggerHandlerTest {
         update oldContact;
         Test.stopTest();
 
-        CountUpdateMethods = [SELECT COUNT() FROM Contact_History__c WHERE Action__c = 'Update' AND Contact__c = :oldContact.Id];
+        Integer CountUpdateMethods = [SELECT COUNT() FROM Contact_History__c WHERE Action__c = 'Update' AND Contact__c = :oldContact.Id];
         System.assertEquals(2, CountUpdateMethods, 'it should create 2 update records');
     }
 
@@ -99,14 +99,14 @@ public class ContactTriggerHandlerTest {
             listToBulk.add(new Contact(
                 FirstName = 'Joanna' + i,
                 LastName = 'Kowalewicz' + i,
-                Email = i+'bulk@gmail.com',
+                Email = i+'bulk@gmail.com'
             ));
         }
         Test.startTest();
         insert listToBulk;
         Test.stopTest();
 
-        countAddedContacts = [SELECT COUNT() FROM Contact_History__c WHERE Action__c = 'Insert'];
-        System.assertEqual(200, countAddedContacts, 'it should create 200 insert history records');
+        Integer countAddedContacts = [SELECT COUNT() FROM Contact_History__c WHERE Action__c = 'Insert'];
+        System.assertEquals(200, countAddedContacts, 'it should create 200 insert history records');
     }
 }
