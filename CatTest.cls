@@ -1,4 +1,6 @@
+@isTest
 public class CatTest {
+    
     @IsTest
     static void catName() {
         Cat cat = new Cat('Maciek');
@@ -45,7 +47,7 @@ public class CatTest {
     static void callCatWithoutName() {
         Cat cat = new Cat('Lusia');
         String response = cat.callCat('');
-        System.assertEquals('Cat ignored you', response);
+        System.assertEquals('Cat ignored You', response);
     }
 
     @isTest
@@ -65,8 +67,8 @@ public class CatTest {
     @isTest
     static void catAgeNull() {
         Cat cat = new Cat('Kicia');
-        Integer response = cat.checkCatsAge('Kicia');
-        System.assertEquals('Birth year not set', response);
+        Integer response = cat.checkCatsAge();
+        System.assertEquals(null, response);
     }
 
     @isTest
