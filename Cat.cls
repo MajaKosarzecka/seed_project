@@ -5,14 +5,12 @@ public with sharing class Cat {
     public String owner;
 
     public Cat(String name) {
-        this.name = name 
+        this(name, null, null);
+        System.debug("imię kota to " + name);
     }
 
     public Cat(String name, Integer birthYear, String color) {
-        this.name = name;
-        this birthYear = birthYear;
-        this.color = color;
-
+        this(name, birthYear, color, null);
     }
 
     public Cat(String name, Integer birthYear, String color, String owner) {
@@ -33,7 +31,7 @@ public with sharing class Cat {
     }
 
     public String callCat(String catName) {
-        if (this.name == catName) {
+        if (this.name != null && this.name.equals(catName)) {
             return 'Cat is on its way';
         } else {
             return 'Cat ignored You';
@@ -53,8 +51,6 @@ public with sharing class Cat {
     public static void meow() {
         System.debug('Meow');
     }
-
-
 
 
     /*
@@ -79,7 +75,7 @@ public with sharing class Cat {
     5. Create a static method called meow. It should print "Meow" and not return anything.
     6. - Try to invoke all of the methods. Note the difference between invoking static and non static methods. 
     */
-}
+
 
 public static void demo() {
     // Example usage of the Cat class
@@ -87,7 +83,12 @@ public static void demo() {
         myCat.adoptCat('Maja');
         myCat.callCat('Kicia');
         myCat.checkCatsAge();
-        meow();
+        
 
     Cat.meow(); //Static without creating an instance
+
+    Cat catName = new Cat('Lusia');
+    Cat catNBC = new Cat('Rex', 2020, 'black');
+    Cat catNBCO= new Cat('Lois', 2019, 'white', 'Ann');
+}
 }
