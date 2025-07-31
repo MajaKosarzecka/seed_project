@@ -50,24 +50,23 @@ public class ContactTriggerHandlerTest {
         Test.stopTest();
     }
 
+
     @isTest
-    static void EmailRequiredBeforeInserting() {
-    Contact contactWithEmail = new Contact(FirstName = 'Jan', LastName = 'Nowak', Email = 'jan.nowak@gmail.com');
-       
+    static void AddToContactHistoryInsertWithEmail() {
+        Contact contact = new Contact(FirstName = 'Jan', LastName = 'Nowak', Email = 'jan.nowakowski@gmail.com');
 
         Test.startTest();
-        try {
-            insert contactWithEmail;
-            System.assert(false, 'id does not catch addError properly');
-        } catch (DmlException e) {
-            System.assertEquals(e.getMessage().contains('Please provide phone or email value'));
-        }
+        insert contact;
         Test.stopTest();
+
+        Integer count = [SELECT COUNT() FROM Contact_History__c WHERE Contact__c = :contact.Id AND Action__c = 'Insert'];
+        System.assertEquals(1, count, 'it should create one insert record with this contact id');
+
     }
 
     @isTest
-    static void AddToContactHistoryAfterInsert() {
-        Contact contact = new Contact(FirstName = 'Jan', LastName = 'Nowak', Email = 'jan.nowakowski@gmail.com');
+    static void AddToContactHistoryInsertWithPhone() {
+        Contact contact = new Contact(FirstName = 'Jan', LastName = 'Nowak', Phone = '123456789');
 
         Test.startTest();
         insert contact;
@@ -162,7 +161,7 @@ public class ContactTriggerHandlerTest {
         }
         insert listToBulk;
         
-        for (Contact c : ListToBulk) {
+        for (Contact c : listToBulk) {
             c.LastName = 'Kowal';
         }
 
@@ -172,5 +171,25 @@ public class ContactTriggerHandlerTest {
 
         Integer countUpdatedContacts = [SELECT COUNT() FROM Contact_History__c WHERE Action__c = 'Update'];
         System.assertEquals(200, countUpdatedContacts, 'it should create 200 update history records');
+    }
+
+    @isTest
+    static void bulkDelete200Contacts() {
+        List<Contact> listToBulk = new List<Contact>();
+        for (Integer i = 0; i < 200; i++) {
+            listToBulk.add(new Contact(
+                FirstName = 'Joanna' + i,
+                LastName = 'Kowalewicz' + i,
+                Email = i+'bulk@gmail.com'
+            ));
+        }
+        insert listToBulk;
+
+        Test.startTest();
+        delete listToBulk;
+        Test.stopTest();
+
+        Integer countUpdatedContacts = [SELECT COUNT() FROM Contact_History__c WHERE Action__c = 'Delete'];
+        System.assertEquals(200, countUpdatedContacts, 'it should create 200 delete history records');
     }
 }
