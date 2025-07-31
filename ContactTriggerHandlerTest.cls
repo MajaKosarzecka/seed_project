@@ -28,7 +28,7 @@ public class ContactTriggerHandlerTest {
             update contact;
             System.assert(false, 'it does not catch addError properly');
         } catch (DmlException e) {
-            System.assert(e.getMessage().contains('Unable to remove account field value'));
+            System.assertEquals(e.getMessage().contains('Unable to remove account field value'));
         }
 
         Test.stopTest();
@@ -37,15 +37,30 @@ public class ContactTriggerHandlerTest {
 
     @isTest
     static void EmailOrPhoneRequiredBeforeInserting() {
-        Contact contactNoEmail = new Contact(FirstName = 'Jan', LastName = 'Nowak');
+        Contact contactNoEmailAndPhone = new Contact(FirstName = 'Jan', LastName = 'Nowak');
        
 
         Test.startTest();
         try {
-            insert contactNoEmail;
+            insert contactNoEmailAndPhone;
             System.assert(false, 'id does not catch addError properly');
         } catch (DmlException e) {
-            System.assert(e.getMessage().contains('Please provide phone or email value'));
+            System.assertEquals(e.getMessage().contains('Please provide phone or email value'));
+        }
+        Test.stopTest();
+    }
+
+    @isTest
+    static void EmailRequiredBeforeInserting() {
+    Contact contactWithEmail = new Contact(FirstName = 'Jan', LastName = 'Nowak', Email = 'jan.nowak@gmail.com');
+       
+
+        Test.startTest();
+        try {
+            insert contactWithEmail;
+            System.assert(false, 'id does not catch addError properly');
+        } catch (DmlException e) {
+            System.assertEquals(e.getMessage().contains('Please provide phone or email value'));
         }
         Test.stopTest();
     }
@@ -77,7 +92,7 @@ public class ContactTriggerHandlerTest {
     }
 
     @isTest
-    static void addUpdatedValuesToContactHistory() {
+    static void addTwoUpdatedValuesToContactHistory() {
         Contact oldContact = getContact();
 
         oldContact.FirstName = 'Ola';
@@ -92,7 +107,33 @@ public class ContactTriggerHandlerTest {
     }
 
     @isTest
-    static void bulk200Contacts() {
+    static void addOneUpdatedValueToContactHistory() {
+        Contact oldContact = getContact();
+
+        oldContact.FirstName = 'Ola';
+
+        Test.startTest();
+        update oldContact;
+        Test.stopTest();
+
+        Integer countUpdateMethods = [SELECT COUNT() FROM Contact_History__c WHERE Action__c = 'Update' AND Contact__c = :oldContact.Id];
+        System.assertEquals(1, countUpdateMethods, 'it should create 1 update records');
+    }
+
+     @isTest
+    static void updateWithoutChanges() {
+        Contact oldContact = getContact();
+
+        Test.startTest();
+        update oldContact;
+        Test.stopTest();
+
+        Integer countUpdateMethods = [SELECT COUNT() FROM Contact_History__c WHERE Action__c = 'Update' AND Contact__c = :oldContact.Id];
+        System.assertEquals(0, countUpdateMethods, 'it should create 0 update records');
+    }
+
+    @isTest
+    static void bulkInsert200Contacts() {
         List<Contact> listToBulk = new List<Contact>();
         for (Integer i = 0; i < 200; i++) {
             listToBulk.add(new Contact(
@@ -107,5 +148,29 @@ public class ContactTriggerHandlerTest {
 
         Integer countAddedContacts = [SELECT COUNT() FROM Contact_History__c WHERE Action__c = 'Insert'];
         System.assertEquals(200, countAddedContacts, 'it should create 200 insert history records');
+    }
+
+    @isTest
+    static void bulkUpdate200Contacts() {
+        List<Contact> listToBulk = new List<Contact>();
+        for (Integer i = 0; i < 200; i++) {
+            listToBulk.add(new Contact(
+                FirstName = 'Joanna' + i,
+                LastName = 'Kowalewicz' + i,
+                Email = i+'bulk@gmail.com'
+            ));
+        }
+        insert listToBulk;
+        
+        for (Contact c : ListToBulk) {
+            c.LastName = 'Kowal';
+        }
+
+        Test.startTest();
+        update listToBulk;
+        Test.stopTest();
+
+        Integer countUpdatedContacts = [SELECT COUNT() FROM Contact_History__c WHERE Action__c = 'Update'];
+        System.assertEquals(200, countUpdatedContacts, 'it should create 200 update history records');
     }
 }
