@@ -1,7 +1,6 @@
 @isTest
 public class CatTest {
-    
-    @IsTest
+    @isTest
     static void catName() {
         Cat cat = new Cat('Maciek');
         System.assertEquals('Maciek', cat.name);
@@ -9,7 +8,7 @@ public class CatTest {
         System.assertEquals(null, cat.color);
     }
 
-    @IsTest
+    @isTest
     static void catNameBirthYearColor() {
         Cat cat = new Cat('Maciek', 2020, 'black');
         System.assertEquals('Maciek', cat.name);
@@ -18,7 +17,7 @@ public class CatTest {
         System.assertEquals(null, cat.owner);
     }
 
-    @IsTest
+    @isTest
     static void catNameBirthYearColorOwner() {
         Cat cat = new Cat('Maciek', 2020, 'black', 'Maja');
         System.assertEquals('Maciek', cat.name);
@@ -47,7 +46,7 @@ public class CatTest {
     static void callCatWithoutName() {
         Cat cat = new Cat('Lusia');
         String response = cat.callCat('');
-        System.assertEquals('Cat ignored You', response);
+        System.assertEquals('Cat ignored you', response);
     }
 
     @isTest
