@@ -26,7 +26,7 @@ public class ContactTriggerHandlerTest {
         Test.startTest();
         try {
             update contact;
-            System.debug(false, 'it does not catch addError properly');
+            System.assert(false, 'it does not catch addError properly');
         } catch (DmlException e) {
             System.assert(e.getMessage().contains('Unable to remove account field value'));
         }
@@ -37,14 +37,13 @@ public class ContactTriggerHandlerTest {
 
     @isTest
     static void EmailOrPhoneRequiredBeforeInserting() {
-        Account a = getAccount();
         Contact contactNoEmail = new Contact(FirstName = 'Jan', LastName = 'Nowak');
        
 
         Test.startTest();
         try {
             insert contactNoEmail;
-            System.debug(false, 'id does not catch addError properly');
+            System.assert(false, 'id does not catch addError properly');
         } catch (DmlException e) {
             System.assert(e.getMessage().contains('Please provide phone or email value'));
         }
@@ -88,8 +87,8 @@ public class ContactTriggerHandlerTest {
         update oldContact;
         Test.stopTest();
 
-        Integer CountUpdateMethods = [SELECT COUNT() FROM Contact_History__c WHERE Action__c = 'Update' AND Contact__c = :oldContact.Id];
-        System.assertEquals(2, CountUpdateMethods, 'it should create 2 update records');
+        Integer countUpdateMethods = [SELECT COUNT() FROM Contact_History__c WHERE Action__c = 'Update' AND Contact__c = :oldContact.Id];
+        System.assertEquals(2, countUpdateMethods, 'it should create 2 update records');
     }
 
     @isTest
