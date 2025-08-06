@@ -17,17 +17,18 @@ public with sharing class PetController {
             LastName = inputData.get('lastName'),
             Phone = inputData.get('phone'),
             Email = inputData.get('email'),
-            MailingAddress = inputData.get('street'),
+            Mailing_Street__c = inputData.get('street'),
             MailingPostalCode__c = inputData.get('postalCode'),
             MailingCity__c = inputData.get('city')
 
-        )
+        );
+    
         insert contact;
 
-        Pet__c pet = [SELECT Id, ForAdoption__c, Owner__c FROM Pet__c WHERE Id = :petId LIMIT 1];
+        Pet__c pet = [SELECT Id, For_Adoption__c, Owner__c FROM Pet__c WHERE Id = :petId LIMIT 1];
 
-        pet.Owner__c = contact.Id
-        ForAdoption__c = false;
+        pet.Owner__c = contact.Id;
+        pet.For_Adoption__c = false;
         update pet;
 
     }
