@@ -1,9 +1,10 @@
 <template>
     <div class="two-columns">
         <div class="left-column">
-            <lightning-button>"All" onclick={handleAll}</lightning-button>
-            <lightning-button>"Adopted" onclick={handleAdopted}</lightning-button>
-            <lightning-button>"For Adoption" onclick ={handleForAdoption}</lightning-button>
+            <div class = "filters">
+            <button class="lg-button" onclick={handleAll}>All</button>
+            <button class="lg-button" onclick={handleAdopted}>Adopted</button>
+            <button class="lg-button" onclick ={handleForAdoption}>For Adoption</button>
         </div>
 
         <div class = "pet-grid">
@@ -20,7 +21,7 @@
                 </div>
             </template>
         </div>
-
+        </div>
         <div class = "right-column">
             <template if:true={showForm}>
                 <c-pet-adoption-form-cmp 

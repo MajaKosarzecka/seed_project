@@ -25,9 +25,11 @@ public with sharing class PetController {
     
         insert contact;
 
-        Pet__c pet = [SELECT Id, For_Adoption__c, Owner__c FROM Pet__c WHERE Id = :petId LIMIT 1];
+        Pet__c pet = [SELECT Id, For_Adoption__c, Owner__c, Owner__r.FirstName FROM Pet__c WHERE Id = :petId LIMIT 1];
 
         pet.Owner__c = contact.Id;
+        pet.Owner__r.FirstName = contact.FirstName;
+        pet.Owner__r.LastName = contact.LastName;
         pet.For_Adoption__c = false;
         update pet;
 

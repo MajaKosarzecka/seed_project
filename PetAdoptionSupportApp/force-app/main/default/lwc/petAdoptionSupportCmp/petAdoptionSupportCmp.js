@@ -7,19 +7,8 @@ export default class PetAdoptionSupportCmp extends LightningElement {
     showForm = false;
     filter = 'All'
 
-    connentedCallback() {
+    connectedCallback() {
         this.loadPets('All')
-    }
-
-    @wire(getPets, {filter: '$filter'})
-    wiredPets({error, data}) {
-        if (data) {
-            this.pets = data;
-            console.log('pets data:', data);
-        } else if (error) {
-            console.error('error while fetching pets', error);
-            this.pets = []
-        }
     }
 
     loadPets(filter) {
@@ -32,7 +21,7 @@ export default class PetAdoptionSupportCmp extends LightningElement {
                     new ShowToastEvent({
                         title: 'Error',
                         message: error.body?.message || 'Something went wrong with loading pets',
-                        variant: error,
+                        variant: 'error',
                         mode: 'dismissable'
                     })
                 )
@@ -41,14 +30,17 @@ export default class PetAdoptionSupportCmp extends LightningElement {
 
     handleAll() {
         this.loadPets('All');
+        this.filter = 'All';
     }
 
     handleAdopted() {
         this.loadPets('Adopted');
+        this.filter = 'Adopted';
     }
 
     handleForAdoption() {
-        this.loadPets('For Adoption')
+        this.loadPets('For Adoption');
+        this.filter = 'For Adoption';
     }
 
     handleAdoptPet(selectedPet) {
