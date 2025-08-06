@@ -9,4 +9,29 @@ public with sharing class PetController {
             return [SELECT Id, Name__c, Type__c, Birthday__c, Color__c, Description__c, Owner__r.Name, For_Adoption__c FROM Pet__c];
         }
     }
+
+    @AuraEnabled
+    public static void adoptPet(String petId, Map<String, String> inputData) {
+        Contact contact = new Contact(
+            FirstName = inputData.get('firstName'),
+            LastName = inputData.get('lastName'),
+            Phone = inputData.get('phone'),
+            Email = inputData.get('email'),
+            MailingAddress = inputData.get('street'),
+            MailingPostalCode__c = inputData.get('postalCode'),
+            MailingCity__c = inputData.get('city')
+
+        )
+        insert contact;
+
+        Pet__c pet = [SELECT Id, ForAdoption__c, Owner__c FROM Pet__c WHERE Id = :petId LIMIT 1];
+
+        pet.Owner__c = contact.Id
+        ForAdoption__c = false;
+        update pet;
+
+    }
+    
+
+    
 }

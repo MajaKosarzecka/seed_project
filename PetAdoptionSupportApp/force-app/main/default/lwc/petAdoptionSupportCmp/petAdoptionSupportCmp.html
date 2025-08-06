@@ -1,22 +1,37 @@
 <template>
-    <div class="buttons">
-        <lightning-button>"All" onclick={handleAll}</lightning-button>
-        <lightning-button>"Adopted" onclick={handleAdopted}</lightning-button>
-        <lightning-button>"For Adoption" onclick ={handleForAdoption}</lightning-button>
-    </div>
+    <div class="two-columns">
+        <div class="left-column">
+            <lightning-button>"All" onclick={handleAll}</lightning-button>
+            <lightning-button>"Adopted" onclick={handleAdopted}</lightning-button>
+            <lightning-button>"For Adoption" onclick ={handleForAdoption}</lightning-button>
+        </div>
 
-    <template if:true={pets}>
-        <div class="card-container">
-            <template for:each={pets} for:item="pet">
-                <c-pet-card-cmp 
-                key={pet.Id}
-                pet={pet}
-                onadopt={handleAdoptPet}
-                ></c-pet-card-cmp>
+        <div class = "pet-grid">
+            <template if:true={pets}>
+                 <div class="card-container">
+                    <template for:each={pets} for:item="pet">
+                        <c-pet-card-cmp 
+                        key={pet.Id}
+                        pet={pet}
+                        onadopt={handleAdoptPet}
+                        >
+                        </c-pet-card-cmp>
+                    </template>
+                </div>
             </template>
         </div>
-    </template>
 
+        <div class = "right-column">
+            <template if:true={showForm}>
+                <c-pet-adoption-form-cmp 
+                pet-id={selectedPetId}
+                onclose={handleFormClose}
+                >
+                </c-pet-adoption-form-cmp>
 
+            </template>
+        </div>
+
+    </div>
 </template>
 

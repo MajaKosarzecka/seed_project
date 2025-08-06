@@ -4,6 +4,7 @@ import getPets from '@salesforce/apex/PetController.getPets';
 export default class PetAdoptionSupportCmp extends LightningElement {
     @track pets;
     selectedPetId;
+    showForm = false;
 
     connentedCallback() {
         this.loadPets('All')
@@ -17,8 +18,8 @@ export default class PetAdoptionSupportCmp extends LightningElement {
             .catch(error => {
                 this.dispatchEvent(
                     new ShowToastEvent({
-                        title: 'Błąd podczas ładowania zwierząt',
-                        message: error.body?.message || 'Coś poszło nie tak',
+                        title: 'Error',
+                        message: error.body?.message || 'Something went wrong with loading pets',
                         variant: error,
                         mode: 'dismissable'
                     })
@@ -40,5 +41,11 @@ export default class PetAdoptionSupportCmp extends LightningElement {
 
     handleAdoptPet(selectedPet) {
         this.selectedPetId = selectedPet.detail.petId;
+        this.showForm = true;
+    }
+
+    handleFormClose() {
+        this.showForm = false;
+        this.loadPets(this.pets ? "All" : "All")
     }
 }
