@@ -1,7 +1,7 @@
 <template>
-    <div class="two-columns">
+    <div class="slds-p-left_medium two-columns">
         <div class="left-column">
-            <div class = "filters">
+            <div class = "slds-p-bottom_medium filters">
             <button class="lg-button" onclick={handleAll}>All</button>
             <button class="lg-button" onclick={handleAdopted}>Adopted</button>
             <button class="lg-button" onclick ={handleForAdoption}>For Adoption</button>
@@ -16,6 +16,7 @@
                         pet={pet}
                         onadopt={handleAdoptPet}
                         >
+                        
                         </c-pet-card-cmp>
                     </template>
                 </div>
@@ -27,6 +28,7 @@
                 <c-pet-adoption-form-cmp 
                 pet-id={selectedPetId}
                 onclose={handleFormClose}
+                onrefresh={handleRefresh}
                 >
                 </c-pet-adoption-form-cmp>
 

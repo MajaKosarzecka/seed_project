@@ -1,5 +1,6 @@
 import { LightningElement, track, api } from 'lwc';
 import adoptPet from '@salesforce/apex/PetController.adoptPet';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class PetAdoptionFormCmp extends LightningElement {
     @api petId;
@@ -16,14 +17,15 @@ export default class PetAdoptionFormCmp extends LightningElement {
     handleAdopt() {
         adoptPet({petId: this.petId, inputData: this.inputData})
             .then(() => {
-                this.dispatchEvent = new CustomEvent('close');
+                this.dispatchEvent(new CustomEvent('close'));
                 this.dispatchEvent(
                     new ShowToastEvent({
                         title: 'success',
                         message: 'pet is adopted',
                         variant: 'success'
                     })
-                )
+                );
+                this.dispatchEvent(new CustomEvent('refresh'));
             })
             .catch(error => {
                 this.dispatchEvent(

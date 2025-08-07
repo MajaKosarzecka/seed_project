@@ -1,5 +1,5 @@
 public with sharing class PetController {
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled
     public static List<Pet__c> getPets(String filterType) {
         if (filterType == 'Adopted') {
             return [SELECT Id, Name__c, Type__c, Birthday__c, Color__c, Description__c, Owner__r.Name FROM Pet__c WHERE For_Adoption__c = FALSE AND Owner__c != NULL];
@@ -25,11 +25,9 @@ public with sharing class PetController {
     
         insert contact;
 
-        Pet__c pet = [SELECT Id, For_Adoption__c, Owner__c, Owner__r.FirstName FROM Pet__c WHERE Id = :petId LIMIT 1];
+        Pet__c pet = [SELECT Id, For_Adoption__c, Owner__c FROM Pet__c WHERE Id = :petId LIMIT 1];
 
         pet.Owner__c = contact.Id;
-        pet.Owner__r.FirstName = contact.FirstName;
-        pet.Owner__r.LastName = contact.LastName;
         pet.For_Adoption__c = false;
         update pet;
 

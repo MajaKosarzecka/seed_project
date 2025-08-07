@@ -1,13 +1,13 @@
 <template>
     <div class="inputs-form">
         <p>Adoption form:</p>
-        <lightning-input label="First Name" data-label="firstName" onchange={handleInputChange}></lightning-input>
-        <lightning-input label="Last Name" data-label="lastName" onchange={handleInputChange}></lightning-input>
-        <lightning-input label="Phone" data-label="phone" onchange={handleInputChange}></lightning-input>
-        <lightning-input label="Email" data-label="email" onchange={handleInputChange}></lightning-input>
-        <lightning-input label="Street" data-label="street" onchange={handleInputChange}></lightning-input>
-        <lightning-input label="Postal Code" data-label="postalCode" onchange={handleInputChange}></lightning-input>
-        <lightning-input label="City" data-label="city" onchange={handleInputChange}></lightning-input>
+        <lightning-input label="First Name" data-field="firstName" onchange={handleInputChange}></lightning-input>
+        <lightning-input label="Last Name" data-field="lastName" onchange={handleInputChange}></lightning-input>
+        <lightning-input label="Phone" data-field="phone" onchange={handleInputChange}></lightning-input>
+        <lightning-input label="Email" data-field="email" onchange={handleInputChange}></lightning-input>
+        <lightning-input label="Street" data-field="street" onchange={handleInputChange}></lightning-input>
+        <lightning-input label="Postal Code" data-field="postalCode" onchange={handleInputChange}></lightning-input>
+        <lightning-input label="City" data-field="city" onchange={handleInputChange}></lightning-input>
         <lightning-button variant="success" label="Adopt" onclick={handleAdopt} disabled={disableAdopt}></lightning-button>
     </div>
 </template>

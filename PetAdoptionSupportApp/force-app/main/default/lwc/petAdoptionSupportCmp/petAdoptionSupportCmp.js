@@ -50,6 +50,10 @@ export default class PetAdoptionSupportCmp extends LightningElement {
 
     handleFormClose() {
         this.showForm = false;
-        this.loadPets(this.pets ? "All" : "All")
+        
+    }
+
+    handleRefresh() {
+        this.loadPets(this.filter);
     }
 }
