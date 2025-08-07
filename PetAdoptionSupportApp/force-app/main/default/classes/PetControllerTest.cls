@@ -40,14 +40,18 @@ public class PetControllerTest {
     static void testGetPetsAdopted() {
        List<Pet__c> adopted = PetController.getPets('Adopted');
        System.Assert.areEqual(1, adopted.size(), 'there should be 1 adopted pet');
-       System.Assert.areEqual(petAdoptedId, adopted[0].Id, 'Pet Id should be the same');
+
+       Pet__c expected = [SELECT Id FROM Pet__c WHERE For_Adoption__c = false AND Name = 'TestAdopted'];
+       System.Assert.areEqual(expected.Id, adopted[0].Id, 'Pet Id should be the same');
     }
 
     @isTest
     static void testGetPetsForAdoption() {
        List<Pet__c> forAdoption = PetController.getPets('For Adoption');
        System.Assert.areEqual(1, forAdoption.size(), 'there should be 1 for adoption pet');
-       System.Assert.areEqual(petAdoptedId, forAdoption[0].Id, 'Pet Id should be the same');
+
+       Pet__c expected = [SELECT Id FROM Pet__c WHERE For_Adoption__c = true AND Name = 'TestName'];
+       System.Assert.areEqual(expected.Id, forAdoption[0].Id, 'Pet Id should be the same');
     }
 
     @isTest
@@ -58,7 +62,7 @@ public class PetControllerTest {
 
     @isTest
     static void testAdoptPetCreatesOwnerAndUpdatesPet() {
-        Pet__c pet = [SELECT Id FROM Pet__c WHERE Id = :petForAdoptionId LIMIT 1];
+        Pet__c pet = [SELECT Id FROM Pet__c WHERE For_Adoption__c = true AND Name = 'TestName' LIMIT 1];
 
         Map<String, String> inputData = new Map<String, String>{
             'firstName' => 'Anna',
@@ -74,6 +78,6 @@ public class PetControllerTest {
 
         Pet__c updated = [SELECT For_Adoption__c FROM Pet__c WHERE Id = :pet.Id];
 
-        System.Assert.isFalse(updated.For_Adoption__c, 'pet cannot be addopted');
+        System.Assert.isFalse(updated.For_Adoption__c, 'pet should not be available for adoption');
     }
 }
