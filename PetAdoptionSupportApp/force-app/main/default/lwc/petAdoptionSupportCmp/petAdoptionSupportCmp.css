@@ -10,7 +10,7 @@
 }
 
 .left-column {
-    width: 30%;
+    width: 40%;
 }
 
 .filters {
@@ -37,5 +37,5 @@
 }
 
 c-pet-card-cmp {
-    flex: 0 0 48%;
+    flex: 0 0 36%;
 }
