@@ -1,0 +1,39 @@
+<template>
+    <div class="slds-p-left_medium two-columns">
+        <div class="left-column">
+            <div class = "slds-p-bottom_medium filters">
+            <button class="lg-button" onclick={handleAll}>All</button>
+            <button class="lg-button" onclick={handleAdopted}>Adopted</button>
+            <button class="lg-button" onclick ={handleForAdoption}>For Adoption</button>
+        </div>
+
+        <div class = "pet-grid">
+            <template if:true={pets}>
+                 <div class="card-container">
+                    <template for:each={pets} for:item="pet">
+                        <c-pet-card-cmp 
+                        key={pet.Id}
+                        pet={pet}
+                        onadopt={handleAdoptPet}
+                        >
+                        
+                        </c-pet-card-cmp>
+                    </template>
+                </div>
+            </template>
+        </div>
+        </div>
+        <div class = "right-column">
+            <template if:true={showForm}>
+                <c-pet-adoption-form-cmp 
+                pet-id={selectedPetId}
+                onclose={handleFormClose}
+                onrefresh={handleRefresh}
+                >
+                </c-pet-adoption-form-cmp>
+
+            </template>
+        </div>
+
+    </div>
+</template>

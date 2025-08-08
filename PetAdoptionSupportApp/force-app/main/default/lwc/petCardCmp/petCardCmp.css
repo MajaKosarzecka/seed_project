@@ -1,0 +1,21 @@
+.pet-card {
+    background-color: #919191;
+    color: white;
+    height: 230px;
+    width: 190px;
+    border-radius:20px
+    
+}
+
+.owner {
+    color: yellow;
+}
+
+.lg-button {
+    border:0px;
+}
+
+.name {
+    color: inherit;
+    text-decoration:none;
+}

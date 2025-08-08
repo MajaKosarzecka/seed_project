@@ -1,0 +1,16 @@
+<template>
+    <div class="slds-box slds-text-align_center slds-border_radius slds-m-bottom_small pet-card">
+        <p>Name:<a href={petUrl} class="name" target="_blank">{name}</a></p>
+        <p>Type: {type}</p>
+        <p>Birthday: {birthday}</p>
+        <p>Color: {color}</p>
+        <p>Description: {description}</p>
+        <template if:true={owner}>
+            <p class="owner">Owner: {owner.Name}</p>
+        </template>
+        <template if:true={forAdoption}>
+            <p class="slds-text-color_success slds-m-bottom_medium">For Adoption</p>
+            <lightning-button variant="success" label="Adopt" onclick={handleAdopt}></lightning-button>
+        </template>
+    </div>
+</template>

@@ -3,10 +3,11 @@ public class ContactCreator {
         List<Contact> contactToInsert = new List<Contact>();
         try{
              Account acc = [SELECT Id FROM Account WHERE Name = :accountName LIMIT 1];
-             for (Integer i = 0; i < numberOfContacts; i++) {
+            for (Integer i = 0; i < numberOfContacts; i++) {
                 Contact newContact = new Contact();
                 newContact.FirstName = contactName +(i + 1);
                 newContact.LastName = 'Doe';
+                newContact.Email = 'john@example.com';
                 newContact.AccountId = acc.Id;
                 contactToInsert.add(newContact);
         }
@@ -21,11 +22,11 @@ public class ContactCreator {
 
     public static String deleteContact(Id contactId) {
         try {
-            Contact contactToDelete = [SELECT Id FROM Contact WHERE Id = :contactId LIMIT = 1];
+            Contact contactToDelete = [SELECT Id FROM Contact WHERE Id = :contactId LIMIT 1];
             delete contactToDelete;
             return 'Success';
         } catch (DmlException e) {
-            return 'Error occured while trying to delete Contact: contactId';
+            return 'No contact found';
         } catch (QueryException e) {
             return 'No contact found';
         }
@@ -33,26 +34,32 @@ public class ContactCreator {
 
     public static Integer getNumberOfContacts(String accountName) {
         try {
-            Account acc = [SELECT Id FROM Account WHERE Name = accountName LIMIT 1];
+            Account acc = [SELECT Id FROM Account WHERE Name = :accountName LIMIT 1];
             Integer count = [SELECT COUNT() FROM Contact WHERE AccountId = :acc.Id];
             return count;
         } catch (QueryException e) {
             System.debug('No account found with the name: ' + accountName);
             return 0;
-        }  
+        }   catch (DmlException e) {
+            System.debug('Error while counting contacts: ' + e.getMessage());
+            return 0;
+        }
     }
     public static Set<Id> getContactByLastName(String lastName) {
         Set<Id> contactIds = new Set<Id>();
-        List<Contact> contacts = [SELECT Id, AccountId, FirstName, LastName, Email, Phone FROM Contact WHERE LastName = :lastName];
-
-        if (contacts.isEmpty()) {
-            System.debug('No contacts found with the last name: ' + lastName);
-        } else {
+        try {
+            List<Contact> contacts = [SELECT Id, AccountId, FirstName, LastName, Email, Phone FROM Contact WHERE LastName = :lastName];
             for (Contact c : contacts) {
                 contactIds.add(c.Id);
             }
+            return contactIds;
+        } catch (QueryException e) {
+            System.debug('No contacts found with the last name: ' + lastName);
+            return contactIds;
+        } catch (DmlException e) {
+            System.debug('Error while retrieving contacts: ' + e.getMessage());
+            return contactIds;
         }
-        return contactIds;
     }
 
     /*
