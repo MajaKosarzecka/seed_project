@@ -7,6 +7,7 @@ public class ContactCreator {
                 Contact newContact = new Contact();
                 newContact.FirstName = contactName +(i + 1);
                 newContact.LastName = 'Doe';
+                newContact.Email = 'john@example.com';
                 newContact.AccountId = acc.Id;
                 contactToInsert.add(newContact);
         }

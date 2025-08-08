@@ -46,7 +46,7 @@ public class CatTest {
     static void callCatWithoutName() {
         Cat cat = new Cat('Lusia');
         String response = cat.callCat('');
-        System.assertEquals('Cat ignored you', response);
+        System.assertEquals('Cat ignored You', response);
     }
 
     @isTest

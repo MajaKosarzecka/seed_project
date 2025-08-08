@@ -35,7 +35,7 @@ public class ContactCreatorTest {
     @IsTest
     static void testDeleteContactSuccess() {
         Account acc = createTestAccount('DeleteAcc');
-        Contact c = new Contact(FirstName = 'Jan', LastName = 'Doe', AccountId = acc.Id);
+        Contact c = new Contact(FirstName = 'Jan', LastName = 'Doe', Email = 'jan@example.com', AccountId = acc.Id);
         insert c;
 
         Test.startTest();
@@ -48,7 +48,7 @@ public class ContactCreatorTest {
 
     @IsTest
     static void testDeleteContactNotFound() {
-        Id fakeId = '12345678910';
+        Id fakeId = '001000000000000AAA';
 
         Test.startTest();
         String result = ContactCreator.deleteContact(fakeId);
@@ -61,8 +61,8 @@ public class ContactCreatorTest {
     static void testGetNumberOfContactsSuccess() {
         Account acc = createTestAccount('CountAcc');
 
-        insert new Contact(FirstName='A', LastName='Doe', AccountId=acc.Id);
-        insert new Contact(FirstName='B', LastName='Doe', AccountId=acc.Id);
+        insert new Contact(FirstName='A', LastName='Doe', Email = 'jan@example.com', AccountId=acc.Id);
+        insert new Contact(FirstName='B', LastName='Doe', Email = 'jan@example.com', AccountId=acc.Id);
 
         Test.startTest();
         Integer count = ContactCreator.getNumberOfContacts('CountAcc');
@@ -84,8 +84,8 @@ public class ContactCreatorTest {
     static void testGetContactByLastNameFound() {
         Account acc = createTestAccount('LastNameAcc');
 
-        Contact contact1 = new Contact(FirstName='Jan', LastName='Kowalski', AccountId=acc.Id);
-        Contact contact2 = new Contact(FirstName='Adam', LastName='Kowalski', AccountId=acc.Id);
+        Contact contact1 = new Contact(FirstName='Jan', LastName='Kowalski', Email = 'jan@example.com', AccountId=acc.Id);
+        Contact contact2 = new Contact(FirstName='Adam', LastName='Kowalski', Email = 'jan@example.com', AccountId=acc.Id);
         insert new List<Contact>{contact1, contact2};
 
         Test.startTest();
@@ -105,4 +105,7 @@ public class ContactCreatorTest {
 
         System.assertEquals(true, ids.isEmpty(), 'No contacts with this LastName');
     }
+    
+  
+ 
 }

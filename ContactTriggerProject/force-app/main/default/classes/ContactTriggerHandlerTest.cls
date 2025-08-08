@@ -172,4 +172,6 @@ public class ContactTriggerHandlerTest {
         Integer countUpdatedContacts = [SELECT COUNT() FROM Contact_History__c WHERE Action__c = 'Update'];
         System.assertEquals(200, countUpdatedContacts, 'it should create 200 update history records');
     }
+
+    
 }

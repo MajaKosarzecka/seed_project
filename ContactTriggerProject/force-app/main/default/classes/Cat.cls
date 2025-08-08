@@ -80,4 +80,3 @@ public with sharing class Cat {
     6. - Try to invoke all of the methods. Note the difference between invoking static and non static methods. 
     */
 }
-
